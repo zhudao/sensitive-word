@@ -1,10 +1,15 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.sensitive.word.api.IWordDeny;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
+import com.github.houbb.sensitive.word.support.replace.WordReplaces;
+import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,7 +29,7 @@ public class SensitiveWordBsTest {
     public void containsTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        Assert.assertTrue(SensitiveWordBs.newInstance().contains(text));
+        Assert.assertTrue(SensitiveWordBs.newInstance().init().contains(text));
     }
 
     /**
@@ -35,7 +40,7 @@ public class SensitiveWordBsTest {
     public void findAllTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
         Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
     }
 
@@ -47,7 +52,7 @@ public class SensitiveWordBsTest {
     public void findFirstTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordBs.newInstance().init().findFirst(text);
         Assert.assertEquals("五星红旗", word);
     }
 
@@ -59,7 +64,7 @@ public class SensitiveWordBsTest {
     public void replaceTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.newInstance().replace(text);
+        String result = SensitiveWordBs.newInstance().init().replace(text);
         Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
     }
 
@@ -71,7 +76,10 @@ public class SensitiveWordBsTest {
     public void replaceCharTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.newInstance().replace(text, '0');
+        String result = SensitiveWordBs.newInstance()
+                .wordReplace(WordReplaces.chars('0'))
+                .init()
+                .replace(text);
         Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
     }
 
@@ -83,7 +91,7 @@ public class SensitiveWordBsTest {
     public void ignoreCaseTest() {
         final String text = "fuCK the bad words.";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordBs.newInstance().init().findFirst(text);
         Assert.assertEquals("fuCK", word);
     }
 
@@ -95,19 +103,37 @@ public class SensitiveWordBsTest {
     public void ignoreWidthTest() {
         final String text = "ｆｕｃｋ the bad words.";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordBs.newInstance().init().findFirst(text);
         Assert.assertEquals("ｆｕｃｋ", word);
     }
 
     @Test
     public void configTest() {
         SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-                .wordDeny(WordDenys.system())
-                .wordAllow(WordAllows.system())
+                .wordDeny(WordDenys.defaults())
+                .wordAllow(WordAllows.defaults())
                 .init();
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
         Assert.assertTrue(wordBs.contains(text));
+    }
+
+    /**
+     * 是否包含
+     * @since 0.29.4
+     */
+    @Test
+    public void wordMatchTest() {
+        IWordDeny wordDeny = new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("av");
+            }
+        };
+        final String text = "have a nice day";
+
+        Assert.assertFalse(SensitiveWordBs.newInstance().wordDeny(wordDeny).init().contains(text));
+        Assert.assertTrue(SensitiveWordBs.newInstance().wordDeny(wordDeny).wordResultCondition(WordResultConditions.alwaysTrue()).init().contains(text));
     }
 
 }

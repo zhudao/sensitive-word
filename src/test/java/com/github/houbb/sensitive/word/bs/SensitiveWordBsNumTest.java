@@ -22,8 +22,10 @@ public class SensitiveWordBsNumTest {
     public void findAllTest() {
         final String text = "这个是我的微信：9989123456";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[微信, 9989123456]", wordList.toString());
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .enableNumCheck(true)
+                .init().findAll(text);
+        Assert.assertEquals("[9989123456]", wordList.toString());
     }
 
     /**
@@ -34,8 +36,10 @@ public class SensitiveWordBsNumTest {
     public void ignoreNumStyleTest() {
         final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[微信, 9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .enableNumCheck(true)
+                .init().findAll(text);
+        Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
     }
 
 }

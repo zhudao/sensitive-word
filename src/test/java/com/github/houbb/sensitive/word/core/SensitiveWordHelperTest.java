@@ -1,8 +1,8 @@
 package com.github.houbb.sensitive.word.core;
 
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
+import com.github.houbb.sensitive.word.api.IWordReplace;
 import com.github.houbb.sensitive.word.api.IWordResult;
-import com.github.houbb.sensitive.word.replace.MySensitiveWordReplace;
+import com.github.houbb.sensitive.word.replace.MyWordReplace;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class SensitiveWordHelperTest {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
         List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-        Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
+        Assert.assertEquals("[WordResult{startIndex=0, endIndex=4, type='WORD', word='5星红旗'}, WordResult{startIndex=9, endIndex=12, type='WORD', word='毛主席'}, WordResult{startIndex=18, endIndex=21, type='WORD', word='天安门'}]", wordList.toString());
     }
 
 
@@ -99,7 +99,7 @@ public class SensitiveWordHelperTest {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
         IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
-        Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
+        Assert.assertEquals("WordResult{startIndex=0, endIndex=4, type='WORD', word='5星红旗'}", word.toString());
     }
 
     /**
@@ -158,7 +158,7 @@ public class SensitiveWordHelperTest {
     public void defineReplaceTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        ISensitiveWordReplace replace = new MySensitiveWordReplace();
+        IWordReplace replace = new MyWordReplace();
         String result = SensitiveWordHelper.replace(text, replace);
 
         Assert.assertEquals("国家旗帜迎风飘扬，教员的画像屹立在***前。", result);

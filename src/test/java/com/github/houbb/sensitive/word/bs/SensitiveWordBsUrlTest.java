@@ -20,13 +20,13 @@ public class SensitiveWordBsUrlTest {
      */
     @Test
     public void commonUrlTest() {
-        final String text = "点击链接 www.baidu.com查看答案";
+        final String text = "点击链接 https://www.baidu.com 查看答案";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[链接, www.baidu.com]", wordList.toString());
+        final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableUrlCheck(true).init();
+        List<String> wordList = sensitiveWordBs.findAll(text);
+        Assert.assertEquals("[https://www.baidu.com]", wordList.toString());
 
-        Assert.assertEquals("点击** *************查看答案", SensitiveWordBs
-                .newInstance().replace(text));
+        Assert.assertEquals("点击链接 ********************* 查看答案", sensitiveWordBs.replace(text));
     }
 
     /**
@@ -39,12 +39,15 @@ public class SensitiveWordBsUrlTest {
      */
     @Test
     public void imageUrlTest() {
-        final String text = "双击查看大图 www.big-image.png查看";
+        final String text = "双击查看大图 http://www.big-image.png 查看";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[www.big-image.png]", wordList.toString());
+        final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .enableUrlCheck(true)
+                .init();
+        List<String> wordList = sensitiveWordBs.findAll(text);
+        Assert.assertEquals("[http://www.big-image.png]", wordList.toString());
 
-        Assert.assertEquals(text, SensitiveWordBs.newInstance().replace(text));
+        Assert.assertEquals("双击查看大图 ************************ 查看", sensitiveWordBs.replace(text));
     }
 
 }

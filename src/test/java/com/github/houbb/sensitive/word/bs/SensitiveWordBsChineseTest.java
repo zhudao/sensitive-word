@@ -22,8 +22,8 @@ public class SensitiveWordBsChineseTest {
     public void ignoreChineseStyleTest() {
         final String text = "我爱我的祖国和五星紅旗。";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[祖国, 五星紅旗]", wordList.toString());
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        Assert.assertEquals("[五星紅旗]", wordList.toString());
     }
 
 }

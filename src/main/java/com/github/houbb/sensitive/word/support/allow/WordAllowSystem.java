@@ -1,9 +1,8 @@
 package com.github.houbb.sensitive.word.support.allow;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.util.io.StreamUtil;
 import com.github.houbb.sensitive.word.api.IWordAllow;
-import com.github.houbb.sensitive.word.api.IWordDeny;
+import com.github.houbb.sensitive.word.utils.InnerStreamUtils;
 
 import java.util.List;
 
@@ -15,9 +14,18 @@ import java.util.List;
 @ThreadSafe
 public class WordAllowSystem implements IWordAllow {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final WordAllowSystem INSTANCE = new WordAllowSystem();
+
+    public static WordAllowSystem getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public List<String> allow() {
-        return StreamUtil.readAllLines("/sensitive_word_allow.txt");
+        return InnerStreamUtils.readAllLines("/sensitive_word_allow.txt");
     }
 
 }

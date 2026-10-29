@@ -1,6 +1,5 @@
 package com.github.houbb.sensitive.word.support.allow;
 
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.sensitive.word.api.IWordAllow;
@@ -42,8 +41,18 @@ public final class WordAllows {
      * @return 结果
      * @since 0.0.13
      */
-    public static IWordAllow system() {
-        return Instances.singleton(WordAllowSystem.class);
+    public static IWordAllow defaults() {
+        return WordAllowSystem.getInstance();
+    }
+
+
+    /**
+     * 空实现，可测试用
+     * @return 结果
+     * @since 0.19.0
+     */
+    public static IWordAllow empty() {
+        return new WordAllowEmpty();
     }
 
 }

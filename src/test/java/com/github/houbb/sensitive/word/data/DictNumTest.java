@@ -1,12 +1,6 @@
 package com.github.houbb.sensitive.word.data;
 
-import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.io.FileUtil;
-import com.github.houbb.heaven.util.lang.StringUtil;
-import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.opencc4j.core.impl.ZhConvertBootstrap;
-import com.github.houbb.opencc4j.support.segment.impl.CharSegment;
-import com.github.houbb.sensitive.word.utils.NumUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -32,8 +26,8 @@ public class DictNumTest {
     @Test
     @Ignore
     public void formatTest() {
-        final String sourceFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
-        final String targetFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String sourceFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
+        final String targetFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
 //        List<String> formats = CollectionUtil.toList(words, new IHandler<String, String>() {

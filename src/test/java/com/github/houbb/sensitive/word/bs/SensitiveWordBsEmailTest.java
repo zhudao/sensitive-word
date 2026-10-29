@@ -22,8 +22,11 @@ public class SensitiveWordBsEmailTest {
     public void emailEnglishTest() {
         final String text = "楼主好人，邮箱 sensitiveword@xx.com";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[邮箱, sensitiveword@xx.com]", wordList.toString());
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .enableEmailCheck(true)
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
     }
 
     /**
@@ -34,8 +37,18 @@ public class SensitiveWordBsEmailTest {
     public void emailNumberTest() {
         final String text = "楼主好人，邮箱 123456789@xx.com";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[邮箱, 123456789, xx.com]", wordList.toString());
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .enableEmailCheck(true)
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[123456789@xx.com]", wordList.toString());
+    }
+
+    @Test
+    public void emailTest() {
+        final String text = "你我.他你";
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        Assert.assertEquals("[]", wordList.toString());
     }
 
 }

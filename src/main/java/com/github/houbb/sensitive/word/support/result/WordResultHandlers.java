@@ -1,6 +1,5 @@
 package com.github.houbb.sensitive.word.support.result;
 
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
 
@@ -19,7 +18,7 @@ public final class WordResultHandlers {
      * @since 0.1.0
      */
     public static IWordResultHandler<IWordResult> raw() {
-        return Instances.singleton(WordResultHandlerRaw.class);
+        return WordResultHandlerRaw.getInstance();
     }
 
     /**
@@ -28,7 +27,16 @@ public final class WordResultHandlers {
      * @since 0.1.0
      */
     public static IWordResultHandler<String> word() {
-        return Instances.singleton(WordResultHandlerWord.class);
+        return WordResultHandlerWord.getInstance();
+    }
+
+    /**
+     * 单词+标签的处理结果
+     * @return 单词+标签的处理结果
+     * @since 0.12.0
+     */
+    public static IWordResultHandler<WordTagsDto> wordTags() {
+        return new WordResultHandlerWordTags();
     }
 
 }
